@@ -1,4 +1,5 @@
 import argparse
+from pdfrw import PdfReader, PdfWriter
 
 parser = argparse.ArgumentParser(
     description="Merges scans of front and back pages into one document"
@@ -33,4 +34,17 @@ parser.add_argument(
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    print("Hello, world")
+
+    front = PdfReader(args.front).pages
+    back = PdfReader(args.back).pages
+
+    assert len(front) == len(back), \
+        "FRONT and BACK must contain the same number of pages"
+
+    if args.reverse:
+        back = reversed(back)
+
+    out = PdfWriter()
+    for pair in zip(front, back):
+        out.addpages(pair)
+    out.write(args.out)
