@@ -19,5 +19,5 @@ install it, the package's dependencies, and run the script, do the following:
 ```
 $ python3 -m pip install --user pipenv
 $ pipenv install
-$ pipenv run python3 intercalate.py --help
+$ pipenv run intercalate --help
 ```
