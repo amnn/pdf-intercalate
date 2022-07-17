@@ -8,15 +8,17 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     '--front', '-F',
     type=str,
+    nargs='+',
     required=True,
-    help='PDF containing front pages',
+    help='PDFs containing front pages',
 )
 
 parser.add_argument(
     '--back', '-B',
     type=str,
+    nargs='+',
     required=True,
-    help='PDF containing back pages (must contain same number of pages as FRONT)',
+    help='PDFs containing back pages (must contain same number of pages as FRONT)',
 )
 
 parser.add_argument(
@@ -35,8 +37,8 @@ parser.add_argument(
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    front = PdfReader(args.front).pages
-    back = PdfReader(args.back).pages
+    front = [page for pdf in args.front for page in PdfReader(pdf).pages]
+    back = [page for pdf in args.back for page in PdfReader(pdf).pages]
 
     assert len(front) == len(back), \
         "FRONT and BACK must contain the same number of pages"
